@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class loginSignUp extends AppCompatActivity {
 
+    Button register;
     TextView signup, login, hasaccounttxt, sign_up_btn_register, donthaveacc, login_user_btn;
     EditText signup_username, signup_userphone, signup_useremail, signup_userpassword, signup_userconfirmpassword;
 
@@ -40,6 +41,7 @@ public class loginSignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_sign_up);
 
+        register = findViewById(R.id.register);
         mAuth = FirebaseAuth.getInstance();
         mAuth1 = FirebaseAuth.getInstance();
 
@@ -59,6 +61,11 @@ public class loginSignUp extends AppCompatActivity {
 
         sign_up_btn_register = findViewById(R.id.signup_btn_register);
 
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -12,7 +12,7 @@
         android:id="@+id/imageView14"
         android:layout_width="406dp"
         android:layout_height="102dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         app:layout_constraintBottom_toTopOf="@+id/textView22"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -58,22 +58,11 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/ubuntu_bold"
                 android:padding="15dp"
-                android:text="Sign up"
+                android:text="Register your pharmacy / store"
                 android:textAlignment="center"
                 android:textColor="#1D49E4"
                 android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/login_btnuser"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/ubuntu_bold"
-                android:padding="15dp"
-                android:text="Login"
-                android:textAlignment="center"
-                android:textColor="#424040"
-                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -101,7 +90,7 @@
                     android:elevation="3dp"
                     android:ems="10"
                     android:fontFamily="@font/ubuntu_bold"
-                    android:hint="Your name"
+                    android:hint="Your store name"
                     android:inputType="textPersonName"
                     android:padding="12dp"
                     android:paddingStart="16dp"
@@ -116,7 +105,7 @@
                     android:elevation="3dp"
                     android:ems="10"
                     android:fontFamily="@font/ubuntu_bold"
-                    android:hint="Enter your phone number"
+                    android:hint="Your store address"
                     android:inputType="number"
                     android:maxLength="10"
                     android:padding="12dp"
@@ -132,7 +121,7 @@
                     android:elevation="3dp"
                     android:ems="10"
                     android:fontFamily="@font/ubuntu_bold"
-                    android:hint="Enter your email"
+                    android:hint="Your store email"
                     android:inputType="textEmailAddress"
                     android:padding="12dp"
                     android:paddingStart="16dp"
@@ -147,26 +136,26 @@
                     android:elevation="3dp"
                     android:ems="10"
                     android:fontFamily="@font/ubuntu_bold"
-                    android:hint="Password"
+                    android:hint="Your store id"
                     android:inputType="textPassword"
                     android:padding="12dp"
                     android:paddingStart="16dp"
                     android:textSize="20sp" />
 
-                <EditText
-                    android:id="@+id/signup_userconfirmpassword"
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Upload store authorisation certificate:"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/button2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/search_bg"
-                    android:elevation="3dp"
-                    android:ems="10"
-                    android:fontFamily="@font/ubuntu_bold"
-                    android:hint="Confirm password"
-                    android:inputType="textPassword"
-                    android:padding="12dp"
-                    android:paddingStart="16dp"
-                    android:textSize="20sp" />
+                    android:text="Cerificate"
+                    android:textAllCaps="false"
+                    app:backgroundTint="#3B3939" />
 
                 <Button
                     android:id="@+id/signup_btn_register"
@@ -182,57 +171,6 @@
                     app:backgroundTint="#267B95" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/loginuser_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="15dp"
-                android:orientation="vertical"
-                android:visibility="gone"
-                tools:visibility="gone">
-
-
-                <EditText
-                    android:id="@+id/login_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/search_bg"
-                    android:elevation="3dp"
-                    android:ems="10"
-                    android:fontFamily="@font/ubuntu_bold"
-                    android:hint="Enter your email"
-                    android:inputType="textEmailAddress"
-                    android:padding="12dp"
-                    android:paddingStart="16dp" />
-
-                <EditText
-                    android:id="@+id/login_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/search_bg"
-                    android:elevation="3dp"
-                    android:ems="10"
-                    android:fontFamily="@font/ubuntu_bold"
-                    android:hint="Password"
-                    android:inputType="textPassword"
-                    android:padding="12dp"
-                    android:paddingStart="16dp" />
-
-                <Button
-                    android:id="@+id/login_user_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/ubuntu_bold"
-                    android:text="Login"
-                    android:textColor="#FFFCFC"
-                    android:textSize="18sp"
-                    app:backgroundTint="#267B95" />
-
-            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
