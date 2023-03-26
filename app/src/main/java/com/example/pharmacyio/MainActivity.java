@@ -2,11 +2,14 @@ package com.example.pharmacyio;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.SearchEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser user;
     private String userId;
     private DatabaseReference databaseReference;
+    private SearchView searchView;
 
     TextView user_name;
     @Override
@@ -44,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        searchView = findViewById(R.id.searchView);
+        searchView.clearFocus();        //remove the cursor from searchview
         user_name = (TextView) findViewById(R.id.user_name);
         order_now =findViewById(R.id.order_now);
         order_now.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +58,19 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, loginSignUp.class);
                 startActivity(intent);
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                FilterText(newText);
+                return true;
             }
         });
 
@@ -83,6 +103,13 @@ public class MainActivity extends AppCompatActivity {
 
         Category();
         Products();
+    }
+
+    private void FilterText(String text) {
+        List<Item> filteredList = new ArrayList<>();
+        for (Item item: products_domain){
+            if(item.g
+        }
     }
 
 

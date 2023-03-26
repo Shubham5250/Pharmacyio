@@ -38,17 +38,25 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/editTextTextPersonName"
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="8dp"
                 android:background="@drawable/search_bg"
-                android:ems="10"
-                android:hint="Search for medical stores near you.."
-                android:inputType="textPersonName"
-                android:padding="10dp"
-                android:textSize="14sp" />
+                app:queryHint="Search for medicines, stores near you..." />
+<!--            <EditText-->
+<!--                android:id="@+id/editTextTextPersonName"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="10dp"-->
+<!--                android:background="@drawable/search_bg"-->
+<!--                android:ems="10"-->
+<!--                android:hint="Search for medical stores near you.."-->
+<!--                android:inputType="textPersonName"-->
+<!--                android:padding="10dp"-->
+<!--                android:textSize="14sp" />-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -137,6 +145,7 @@
                     android:layout_marginBottom="20dp"
                     android:text="Order now"
                     android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
                     app:backgroundTint="#1D49E4"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/textView10"
