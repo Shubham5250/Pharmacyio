@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private String userId;
     private DatabaseReference databaseReference;
     private SearchView searchView;
+    private List<products_domain> productsDomains;
 
     TextView user_name;
     @Override
@@ -69,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                FilterText(newText);
                 return true;
             }
         });
@@ -105,12 +105,7 @@ public class MainActivity extends AppCompatActivity {
         Products();
     }
 
-    private void FilterText(String text) {
-        List<Item> filteredList = new ArrayList<>();
-        for (Item item: products_domain){
-            if(item.g
-        }
-    }
+
 
 
     private void Category(){
@@ -153,4 +148,5 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.Adapter adapter_products = new product_adaptor(productDomains);
         recyclerView_ProductsList.setAdapter(adapter_products);
     }
+
 }
