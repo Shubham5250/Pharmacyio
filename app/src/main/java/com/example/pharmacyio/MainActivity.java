@@ -74,9 +74,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        userId = user.getUid();
+//        user = FirebaseAuth.getInstance().getCurrentUser();
+//        userId = user.getUid();
 
+        //database reference
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
 
