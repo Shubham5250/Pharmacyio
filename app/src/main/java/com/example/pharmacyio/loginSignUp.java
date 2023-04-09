@@ -145,12 +145,12 @@ public class loginSignUp extends AppCompatActivity {
             return;
         }
         else if(user_password.length()<6){
-            signup_userpassword.setError("Password should be atleast ");
+            signup_userpassword.setError("Password should be atleast 6 characters");
             signup_userpassword.requestFocus();
             return;
         }
         if(!user_password.matches(conf_password)){
-            signup_userconfirmpassword.setError("Password should match with the above");
+            signup_userconfirmpassword.setError("Both password should match");
             signup_userconfirmpassword.requestFocus();
             return;
         }
