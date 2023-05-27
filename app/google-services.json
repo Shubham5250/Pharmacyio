@@ -1,13 +1,14 @@
 {
   "project_info": {
     "project_number": "340964987829",
+    "firebase_url": "https://pharmacyio-49c21-default-rtdb.firebaseio.com",
     "project_id": "pharmacyio-49c21",
     "storage_bucket": "pharmacyio-49c21.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:340964987829:android:58eaf84dc1e1babc68bffc",
+        "mobilesdk_app_id": "1:340964987829:android:9d2372edd4dbe69a68bffc",
         "android_client_info": {
           "package_name": "com.example.pharmacyio"
         }

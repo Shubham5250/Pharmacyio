@@ -18,54 +18,30 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp">
 
             <ImageView
                 android:id="@+id/imageView14"
                 android:layout_width="406dp"
                 android:layout_height="108dp"
+                android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView22"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/maiact_offer_png" />
 
             <TextView
                 android:id="@+id/textView22"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="10dp"
                 android:fontFamily="@font/ubuntu_bold"
                 android:text="Pharmacyio"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toTopOf="@+id/imageView14"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView14" />
 
-            <TextView
-                android:id="@+id/donthaveacc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/ubuntu_bold"
-                android:text="Don't have an account?"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/hasaccounttxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/ubuntu_bold"
-                android:text="Already have an account?"
-                android:textColor="#000000"
-                android:textSize="18sp"
-
-                android:visibility="visible"
-                tools:layout_editor_absoluteX="256dp"
-                tools:layout_editor_absoluteY="362dp" />
 
             <Button
                 android:id="@+id/register"
@@ -77,18 +53,21 @@
                 android:textColor="#1D49E4"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+                app:layout_constraintVertical_bias="1.0" />
 
             <LinearLayout
                 android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:background="#FFFFFF"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="148dp">
+                app:layout_constraintTop_toBottomOf="@+id/textView22">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -134,8 +113,8 @@
                         android:layout_marginTop="15dp"
                         android:layout_marginEnd="15dp"
                         android:orientation="vertical"
-                        android:visibility="visible"
-                        tools:visibility="visible">
+                        android:visibility="gone"
+                        >
 
                         <EditText
                             android:id="@+id/signup_username"
@@ -148,22 +127,6 @@
                             android:fontFamily="@font/ubuntu_bold"
                             android:hint="Your name"
                             android:inputType="textPersonName"
-                            android:padding="12dp"
-                            android:paddingStart="16dp"
-                            android:textSize="20sp" />
-
-                        <EditText
-                            android:id="@+id/signup_userphone"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
-                            android:background="@drawable/search_bg"
-                            android:elevation="3dp"
-                            android:ems="10"
-                            android:fontFamily="@font/ubuntu_bold"
-                            android:hint="Enter your phone number"
-                            android:inputType="number"
-                            android:maxLength="10"
                             android:padding="12dp"
                             android:paddingStart="16dp"
                             android:textSize="20sp" />
@@ -198,33 +161,32 @@
                             android:paddingStart="16dp"
                             android:textSize="20sp" />
 
-                        <EditText
-                            android:id="@+id/signup_userconfirmpassword"
+                        <FrameLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
-                            android:background="@drawable/search_bg"
-                            android:elevation="3dp"
-                            android:ems="10"
-                            android:fontFamily="@font/ubuntu_bold"
-                            android:hint="Confirm password"
-                            android:inputType="textPassword"
-                            android:padding="12dp"
-                            android:paddingStart="16dp"
-                            android:textSize="20sp" />
+                            android:layout_height="wrap_content">
 
-                        <Button
-                            android:id="@+id/signup_btn_register"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:elevation="4dp"
-                            android:fontFamily="@font/ubuntu_bold"
-                            android:paddingTop="8dp"
-                            android:paddingBottom="8dp"
-                            android:text="sign up"
-                            android:textColor="#FFF7F7"
-                            android:textSize="20sp"
-                            app:backgroundTint="#267B95" />
+
+                            <ProgressBar
+                                android:id="@+id/SHOW_PROGRESS"
+                                android:layout_width="25dp"
+                                android:visibility="gone"
+                                android:layout_gravity="center"
+                                android:layout_height="25dp"/>
+                            <Button
+                                android:visibility="visible"
+                                android:id="@+id/signup_btn_register"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:elevation="4dp"
+                                android:fontFamily="@font/ubuntu_bold"
+                                android:paddingTop="8dp"
+                                android:paddingBottom="8dp"
+                                android:text="sign up"
+                                android:textColor="#FFF7F7"
+                                android:textSize="20sp"
+                                app:backgroundTint="#267B95" />
+                        </FrameLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -235,8 +197,8 @@
                         android:layout_marginTop="15dp"
                         android:layout_marginEnd="15dp"
                         android:orientation="vertical"
-                        android:visibility="gone"
-                        tools:visibility="gone">
+                        android:visibility="visible"
+                        >
 
 
                         <EditText

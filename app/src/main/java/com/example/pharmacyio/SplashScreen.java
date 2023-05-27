@@ -20,41 +20,8 @@ public class SplashScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                SharedPreferences sharedPreferences = getSharedPreferences(loginSignUp.PREFS_NAME,0);
-                boolean hasRegistered = sharedPreferences.getBoolean("hasRegistered",false);
-
-
-                Intent i;
-                if(hasRegistered){
-
-                    i = new Intent(SplashScreen.this, MainActivity.class);
-
-                }
-                else{
-                    i = new Intent(SplashScreen.this, loginSignUp.class);
-                }
-                startActivity(i);
-                finish();
-            }
-        }, SPLASH_TIME_OUT);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                SharedPreferences sharedPreferences = getSharedPreferences(loginSignUp.PREF_NAME,0);
-                boolean hasLoggedIn = sharedPreferences.getBoolean("hasLoggedIn",false);
-
-
-                Intent i;
-                if(hasLoggedIn){
-
-                    i = new Intent(SplashScreen.this, MainActivity.class);
-
-                }
-                else{
-                    i = new Intent(SplashScreen.this, loginSignUp.class);
-                }
-                startActivity(i);
-                finish();
+                Intent intent = new Intent(SplashScreen.this, loginSignUp.class);
+                startActivity(intent);
             }
         }, SPLASH_TIME_OUT);
 

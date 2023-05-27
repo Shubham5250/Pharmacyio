@@ -1,59 +1,66 @@
 package com.example.pharmacyio;
 
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.ClipData;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.SearchEvent;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.pharmacyio.Adaptor.category_adaptor;
 import com.example.pharmacyio.Adaptor.product_adaptor;
 import com.example.pharmacyio.domain.category_domain;
 import com.example.pharmacyio.domain.products_domain;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView_CategoryList, recyclerView_ProductsList;
     Button order_now;
 
-    private FirebaseUser user;
     private String userId;
-    private DatabaseReference databaseReference;
     private SearchView searchView;
     private List<products_domain> productsDomains;
 
+    TextView view_products, view_category;
+    SharedPreferences sharedPreferences;
     TextView user_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sharedPreferences = getSharedPreferences("MyAppName", MODE_PRIVATE);
 
+        view_products = findViewById(R.id.view_products);
+        view_category = findViewById(R.id.view_category);
         searchView = findViewById(R.id.searchView);
         searchView.clearFocus();        //remove the cursor from searchview
-        user_name = (TextView) findViewById(R.id.user_name);
         order_now =findViewById(R.id.order_now);
+
+        if (sharedPreferences.getString("logged", "false").equals("true")) {
+            Intent intent = new Intent(getApplicationContext(), loginSignUp.class);
+            startActivity(intent);
+            finish();
+        }
         order_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,39 +81,65 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        user = FirebaseAuth.getInstance().getCurrentUser();
-//        userId = user.getUid();
-
-        //database reference
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
-
-
-        databaseReference.child(String.valueOf(userId)).addListenerForSingleValueEvent(new ValueEventListener() {
+        view_products.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User userProfile = snapshot.getValue(User.class);
-
-                if(userProfile != null){
-
-                    String name = userProfile.userName;
-
-                    user_name.setText(name);
-
-                }
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, productsFull.class);
+                startActivity(intent);
             }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError error) {
-
-        }
-    });
-
-
+        });
         Category();
         Products();
+        fetchUser();
+
     }
 
+    private void fetchUser(){
 
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        String login_url ="http://192.168.0.100/login_registration/logout.php";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, login_url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                            if(response.equals("success")){
+
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("logged", "true");
+                                editor.putString("name", "");
+                                editor.putString("email", "");
+                                editor.apply();
+                                Toast.makeText(getApplicationContext(), "Hii", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(),response, Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(getApplicationContext(), "Error Server: "+error, Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
+            }
+        }){
+            protected Map<String, String> getParams(){
+                Map<String, String> paramV = new HashMap<>();
+                paramV.put("email", sharedPreferences.getString("email", ""));
+                return paramV;
+            }
+        };
+
+        queue.add(stringRequest);
+    }
 
 
     private void Category(){

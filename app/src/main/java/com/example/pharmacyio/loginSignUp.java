@@ -1,6 +1,5 @@
 package com.example.pharmacyio;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,31 +9,40 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.FirebaseDatabase;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import java.io.BufferedWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class loginSignUp extends AppCompatActivity {
 
     Button register;
-    TextView signup, login, hasaccounttxt, sign_up_btn_register, donthaveacc, login_user_btn;
-    EditText signup_username, signup_userphone, signup_useremail, signup_userpassword, signup_userconfirmpassword;
+    TextView signup, login, login_btnuser, signup_btn, sign_up_btn_register, donthaveacc, login_user_btn;
+    EditText signup_username, signup_userphone, signup_useremail, signup_userpassword, signup_userconfirmpassword, login_email, login_password;
 
     LinearLayout signUp_userLayout, login_userLayout;
+
+    ProgressBar progressBar;
 
     public static final String PREFS_NAME = "MyPrefsFile";
     public static final String PREF_NAME = "MyPrefFile";
 
-    FirebaseAuth mAuth;
-    FirebaseAuth mAuth1;
+    SharedPreferences sharedPreferences;
 
+    String name, email, password, emaill, passwordl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,155 +50,156 @@ public class loginSignUp extends AppCompatActivity {
         setContentView(R.layout.activity_login_sign_up);
 
         register = findViewById(R.id.register);
-        mAuth = FirebaseAuth.getInstance();
-        mAuth1 = FirebaseAuth.getInstance();
+
+        sharedPreferences = getSharedPreferences("MyAppName", MODE_PRIVATE);
+
+        login_btnuser = findViewById(R.id.login_btnuser);
+        signup_btn = findViewById(R.id.signup_btn);
+
+        login_email = findViewById(R.id.login_email);
+        login_password = findViewById(R.id.login_password);
 
         signUp_userLayout = findViewById(R.id.signupuser_layout);
         login_userLayout = findViewById(R.id.loginuser_layout);
-        login = findViewById(R.id.login_btnuser);
-        signup = findViewById(R.id.signup_btn);
+
         login_user_btn = findViewById(R.id.login_user_btn);
-        hasaccounttxt = findViewById(R.id.hasaccounttxt);
-        donthaveacc = findViewById(R.id.donthaveacc);
         signup_username = findViewById(R.id.signup_username);
-        signup_userphone = findViewById(R.id.signup_userphone);
         signup_useremail = findViewById(R.id.signup_useremail);
-        hasaccounttxt = findViewById(R.id.hasaccounttxt);
         signup_userpassword = findViewById(R.id.signup_userpassword);
-        signup_userconfirmpassword = findViewById(R.id.signup_userconfirmpassword);
 
         sign_up_btn_register = findViewById(R.id.signup_btn_register);
 
-        register.setOnClickListener(new View.OnClickListener() {
+        progressBar = findViewById(R.id.SHOW_PROGRESS);
+
+        if (sharedPreferences.getString("logged", "false").equals("true")) {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        login_btnuser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            }
-        });
-        signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                login_userLayout.setVisibility(View.GONE);
-                signUp_userLayout.setVisibility(View.VISIBLE);
-                donthaveacc.setVisibility(View.GONE);
-                hasaccounttxt.setVisibility(View.VISIBLE);
-                signup.setTextColor(getResources().getColor(R.color.theme_color));
-                login.setTextColor(getResources().getColor(R.color.default_color));
+                signUp_userLayout.setVisibility(View.GONE);
+                login_userLayout.setVisibility(View.VISIBLE);
             }
         });
 
-        login.setOnClickListener(new View.OnClickListener() {
+        signup_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login_userLayout.setVisibility(View.VISIBLE);
-                signUp_userLayout.setVisibility(View.GONE);
-                hasaccounttxt.setVisibility(View.GONE);
-                donthaveacc.setVisibility(View.VISIBLE);
-                login.setTextColor(getResources().getColor(R.color.theme_color));
-                signup.setTextColor(getResources().getColor(R.color.default_color));
+                signUp_userLayout.setVisibility(View.VISIBLE);
+                login_userLayout.setVisibility(View.GONE);
             }
         });
 
         login_user_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME,0);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
+            public void onClick(View v){
 
-                editor.putBoolean("hasLoggedIn", true);
-                editor.apply();
 
+                passwordl = String.valueOf(login_password.getText());
+                emaill = String.valueOf(login_email.getText());
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                String login_url ="http://192.168.0.100/login_registration/login.php";
+
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, login_url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+
+
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    String status = jsonObject.getString("status");
+                                    String message = jsonObject.getString("message");
+                                    if(status.equals("success")){
+                                        name = jsonObject.getString("name");
+                                        email = jsonObject.getString("email");
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        editor.putString("logged", "true");
+                                        editor.putString("name", name);
+                                        editor.putString("email", email);
+                                        editor.apply();
+                                        Toast.makeText(loginSignUp.this, "Hii", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                } catch (JSONException e) {
+                                    Toast.makeText(getApplicationContext(), "Error: "+e, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        Toast.makeText(loginSignUp.this, "Error Server: "+error, Toast.LENGTH_SHORT).show();
+                        error.printStackTrace();
+                    }
+                }){
+                    protected Map<String, String> getParams(){
+                        Map<String, String> paramV = new HashMap<>();
+                        paramV.put("email", emaill);
+                        paramV.put("password", passwordl);
+                        return paramV;
+                    }
+                };
+
+                queue.add(stringRequest);
             }
         });
 
         sign_up_btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME,0);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
+                progressBar.setVisibility(View.VISIBLE);
+                sign_up_btn_register.setVisibility(View.GONE);
+                name = String.valueOf(signup_username.getText());
+                password = String.valueOf(signup_userpassword.getText());
+                email = String.valueOf(signup_useremail.getText());
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                String register_url ="http://192.168.123.197/login_registration/register.php";
 
-                editor.putBoolean("hasRegistered", true);
-                editor.apply();
-                registerUser();
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, register_url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                progressBar.setVisibility(View.GONE);
+                                if(response.equals("success")){
+                                    Toast.makeText(getApplicationContext(), "Registration successful", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(intent);
 
+                                    finish();
+                                }
+                                else{
+                                    Toast.makeText(getApplicationContext() , "Error: "+response, Toast.LENGTH_SHORT).show();
+                                    sign_up_btn_register.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressBar.setVisibility(View.GONE);
+                        sign_up_btn_register.setVisibility(View.VISIBLE);
+                        Toast.makeText(loginSignUp.this, "Error Server", Toast.LENGTH_SHORT).show();
+                        error.printStackTrace();
+                    }
+                }){
+                    protected Map<String, String> getParams(){
+                        Map<String, String> paramV = new HashMap<>();
+                        paramV.put("name", name);
+                        paramV.put("email", email);
+                        paramV.put("password", password);
+                        return paramV;
+                    }
+                };
+
+                queue.add(stringRequest);
             }
         });
 
     }
 
-    private void registerUser(){
-        String user_name = signup_username.getText().toString();
-        String user_email = signup_useremail.getText().toString();
-        String user_phone = signup_userphone.getText().toString();
-        String user_password = signup_userpassword.getText().toString();
-        String conf_password = signup_userconfirmpassword.getText().toString();
 
-        if(user_name.isEmpty()){
-            signup_username.setError("Name is required");
-            signup_username.requestFocus();
-            return;
-        }
-        else if(user_email.isEmpty()){
-            signup_useremail.setError("Email is required");
-            signup_useremail.requestFocus();
-            return;
-        }
-        else if(user_phone.isEmpty()){
-            signup_userphone.setError("Phone number is required");
-            signup_userphone.requestFocus();
-            return;
-        }
-        else if(user_password.isEmpty()){
-            signup_userpassword.setError("Password is required");
-            signup_userpassword.requestFocus();
-            return;
-        }
-        else if(user_password.length()<6){
-            signup_userpassword.setError("Password should be atleast 6 characters");
-            signup_userpassword.requestFocus();
-            return;
-        }
-        if(!user_password.matches(conf_password)){
-            signup_userconfirmpassword.setError("Both password should match");
-            signup_userconfirmpassword.requestFocus();
-            return;
-        }
-
-        mAuth.createUserWithEmailAndPassword(user_email,user_password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            User user = new User(user_name, user_email, user_phone);
-
-                            FirebaseDatabase.getInstance().getReference("users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())      //we get the registered users id and set it here, so that we can correspond this object(i.e user) to the registered user
-                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task2) {
-
-                                            if(task2.isSuccessful()){
-
-                                                sendUserToNextActivity();
-                                            }
-                                            else{
-
-
-                                                Toast.makeText(loginSignUp.this, ""+task2.getException(), Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
-                        }
-                        else{
-                            Toast.makeText(loginSignUp.this, ""+task.getException(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-    }
-
-    private void sendUserToNextActivity() {
-        Intent i = new Intent(loginSignUp.this, MainActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
-    }
 }
